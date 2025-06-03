@@ -11,6 +11,19 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int selectedNavigationIndex = 0;
+  late final List<Widget> pages;
+
+  @override
+  void initState() {
+    pages = [
+      navBarPage(0),
+      navBarPage(1),
+      navBarPage(2),
+    ];
+    
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +66,21 @@ class _MyHomePageState extends State<MyHomePage> {
           icon: Icon(Iconsax.profile_circle5),
           label: 'Profile',
         ),
-      ]),
+      ],),
+      body: pages[selectedNavigationIndex],
     );
+  }
+
+  navBarPage(int index) {
+    switch (index) {
+      case 0:
+        return const Center(child: Text('Home Page'));
+      case 1:
+        return const Center(child: Text('Favorites Page'));
+      case 2:
+        return const Center(child: Text('Profile Page'));
+      default:
+        return const Center(child: Text('Page Not Found'));
+    }
   }
 }
