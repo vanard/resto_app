@@ -1,9 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
+import 'package:restaurant_app/providers/restaurants_provider.dart';
 import 'package:restaurant_app/screens/app_main_screen.dart';
 import 'package:restaurant_app/theme.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(
+    ChangeNotifierProvider(
+      create: (context) => RestaurantsProvider(),
+      child: MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -13,8 +21,12 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: lightTheme,
-      darkTheme: darkTheme,
+      theme: lightTheme.copyWith(
+        textTheme: GoogleFonts.senTextTheme(Theme.of(context).textTheme),
+      ),
+      darkTheme: darkTheme.copyWith(
+        textTheme: GoogleFonts.senTextTheme(Theme.of(context).textTheme),
+      ),
       themeMode: ThemeMode.system,
       debugShowCheckedModeBanner: false,
       home: const MyHomePage(),
