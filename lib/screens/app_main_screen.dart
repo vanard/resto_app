@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:restaurant_app/screens/restaurant_food_screens.dart';
+import 'package:restaurant_app/screens/profile_view.dart';
+import 'package:restaurant_app/screens/restaurant_food_view.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
@@ -23,10 +24,10 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      // backgroundColor: Colors.white,
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: selectedNavigationIndex,
-        backgroundColor: Colors.white,
+        backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
         elevation: 0,
         iconSize: 28,
         selectedItemColor: Theme.of(context).colorScheme.primary,
@@ -70,7 +71,7 @@ class _MyHomePageState extends State<MyHomePage> {
       case 1:
         return const Center(child: Text('Favorites Page'));
       case 2:
-        return const Center(child: Text('Profile Page'));
+        return const ProfileScreen();
       default:
         return const Center(child: Text('Page Not Found'));
     }
