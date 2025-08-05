@@ -9,8 +9,10 @@ class TitleText extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       text,
+      maxLines: 1,
       textAlign: TextAlign.start,
       style: Theme.of(context).textTheme.titleMedium!.copyWith(
+        color: Theme.of(context).colorScheme.onSurface,
         fontWeight: FontWeight.bold,
         fontSize: 20,
       ),

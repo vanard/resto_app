@@ -9,8 +9,10 @@ class LabelTitleText extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       text,
+      maxLines: 2,
       textAlign: TextAlign.start,
       style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+        color: Theme.of(context).colorScheme.onSurface,
         fontWeight: FontWeight.w600,
         fontSize: 16,
       ),
