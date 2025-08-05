@@ -10,7 +10,7 @@ class Restaurant {
   final List<Type>? categories;
   final Menus? menus;
   final double rating;
-  final List<CustomerReview>? customerReviews;
+  List<CustomerReview>? customerReviews;
 
   Restaurant({
     required this.id,
@@ -31,7 +31,7 @@ class Restaurant {
       name: json['name'] as String,
       description: json['description'] as String,
       city: json['city'] as String,
-      address: json['address'] as String?, // Nullable field
+      address: json['address'] as String?,
       pictureId: json['pictureId'] as String,
       rating: (json['rating'] as num).toDouble(),
       // Handle nested lists and objects, checking for nullability
