@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:restaurant_app/data/api_service.dart';
+import 'package:restaurant_app/providers/main_provider.dart';
 import 'package:restaurant_app/providers/restaurants_provider.dart';
 import 'package:restaurant_app/screens/app_main.dart';
 import 'package:restaurant_app/utils/theme.dart';
@@ -16,6 +17,7 @@ void main() {
             apiService: Provider.of<ApiService>(context, listen: false),
           ),
         ),
+        ChangeNotifierProvider(create: (context) => MainProvider()),
       ],
       child: MyApp(),
     ),
