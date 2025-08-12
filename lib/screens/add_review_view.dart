@@ -16,7 +16,6 @@ class _AddReviewScreensState extends State<AddReviewScreens> {
   final _formKey = GlobalKey<FormState>();
   var _enteredName = '';
   var _enteredReview = '';
-  var _isLoading = false;
 
   void _submit() async {
     final isValid = _formKey.currentState!.validate();
@@ -26,19 +25,11 @@ class _AddReviewScreensState extends State<AddReviewScreens> {
 
     _formKey.currentState!.save();
 
-    setState(() {
-      _isLoading = true;
-    });
-
     final provider = Provider.of<RestaurantsProvider>(context, listen: false);
     await provider.addCustomerReview(
       widget.restoId,
       CustomerReview(name: _enteredName, review: _enteredReview),
     );
-
-    setState(() {
-      _isLoading = false;
-    });
 
     if (!context.mounted) {
       return;
@@ -115,12 +106,14 @@ class _AddReviewScreensState extends State<AddReviewScreens> {
                     child: Text('Reset'),
                   ),
                   const SizedBox(width: 4),
-                  _isLoading
-                      ? const CircularProgressIndicator()
-                      : ElevatedButton(
-                          onPressed: _submit,
-                          child: Text('Add Review'),
-                        ),
+                  Consumer<RestaurantsProvider>(
+                    builder: (context, provider, child) => provider.isLoading
+                        ? const CircularProgressIndicator()
+                        : ElevatedButton(
+                            onPressed: _submit,
+                            child: Text('Add Review'),
+                          ),
+                  ),
                 ],
               ),
               const SizedBox(height: 8),

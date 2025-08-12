@@ -15,8 +15,6 @@ class RestaurantFoodScreens extends StatefulWidget {
 }
 
 class _RestaurantFoodScreensState extends State<RestaurantFoodScreens> {
-  var _isSearching = false;
-  final _searchTextController = TextEditingController();
   final _debouncer = Debouncer(milliseconds: 500);
 
   void _onSearchChanged(String query) {
@@ -36,7 +34,9 @@ class _RestaurantFoodScreensState extends State<RestaurantFoodScreens> {
 
   @override
   void dispose() {
-    _searchTextController.dispose();
+    // final provider = Provider.of<RestaurantsProvider>(context, listen: false);
+    // provider.dispose();
+    // _searchTextController.dispose();
     _debouncer.dispose();
     super.dispose();
   }
@@ -48,27 +48,33 @@ class _RestaurantFoodScreensState extends State<RestaurantFoodScreens> {
 
     return Scaffold(
       appBar: AppBar(
-        title: _isSearching
+        title: provider.isSearching
             ? TextField(
                 onSubmitted: _onSearchChanged,
-                controller: _searchTextController,
+                controller: provider.searchTextController,
                 decoration: InputDecoration(
-                  hintText: 'Search...',
+                  hintText: 'Search for restaurants...',
                   border: InputBorder.none,
+                ),
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.onSurface,
                 ),
                 autofocus: true,
                 onChanged: _onSearchChanged,
               )
+            // : TitleText(text: 'Restaurant'),
             : Text('Restaurant'),
         actions: [
           IconButton(
             onPressed: () {
-              setState(() {
-                _searchTextController.text = '';
-                _isSearching = !_isSearching;
-              });
+              provider.onToggleSearch();
+              // setState(() {
+
+              //   _searchTextController.text = '';
+              //   _isSearching = !_isSearching;
+              // });
             },
-            icon: _isSearching ? Icon(Icons.close) : Icon(Icons.search),
+            icon: provider.isSearching ? Icon(Icons.close) : Icon(Icons.search),
           ),
         ],
       ),
@@ -85,7 +91,12 @@ class _RestaurantFoodScreensState extends State<RestaurantFoodScreens> {
   }
 
   Widget getErrorUI(String error) {
-    return Center(child: Text(error));
+    return Center(
+      child: Text(
+        error,
+        style: TextStyle(color: Theme.of(context).colorScheme.onSurface),
+      ),
+    );
   }
 
   getBodyUI(List<Restaurant> restaurants) {

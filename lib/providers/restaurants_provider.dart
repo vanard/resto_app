@@ -6,7 +6,7 @@ import 'package:restaurant_app/models/restaurant.dart';
 
 class RestaurantsProvider extends ChangeNotifier {
   late final ApiService _apiService;
-  bool _isLoading = true;
+  bool _isLoading = false;
   String _error = '';
   Map<String, dynamic>? _remoteData;
 
@@ -36,12 +36,6 @@ class RestaurantsProvider extends ChangeNotifier {
     ),
   );
 
-  ResponseReviews responseReviews = ResponseReviews(
-    error: false,
-    message: '',
-    reviews: [],
-  );
-
   void fetchRestaurantList() async {
     _isLoading = true;
 
@@ -65,24 +59,6 @@ class RestaurantsProvider extends ChangeNotifier {
     try {
       _remoteData = await _apiService.getRestaurantById(id);
       baseResponse = ResponseRestaurant.fromJson(_remoteData!);
-      _error = '';
-    } catch (e) {
-      debugPrint('Error: $e');
-      _error = ApiService.messageToUser;
-      _remoteData = null;
-    } finally {
-      _isLoading = false;
-      notifyListeners();
-    }
-  }
-
-  Future<void> addCustomerReview(String restoId, CustomerReview review) async {
-    _isLoading = true;
-
-    try {
-      _remoteData = await _apiService.addReview(restoId, review);
-      responseReviews = ResponseReviews.fromJson(_remoteData!);
-      baseResponse.restaurant.customerReviews = responseReviews.reviews;
       _error = '';
     } catch (e) {
       debugPrint('Error: $e');
@@ -120,5 +96,54 @@ class RestaurantsProvider extends ChangeNotifier {
       _isLoading = false;
       notifyListeners();
     }
+  }
+
+  //TODO
+
+  ResponseReviews responseReviews = ResponseReviews(
+    error: false,
+    message: '',
+    reviews: [],
+  );
+
+  Future<void> addCustomerReview(String restoId, CustomerReview review) async {
+    _isLoading = true;
+    notifyListeners();
+
+    try {
+      _remoteData = await _apiService.addReview(restoId, review);
+      responseReviews = ResponseReviews.fromJson(_remoteData!);
+      baseResponse.restaurant.customerReviews = responseReviews.reviews;
+      _error = '';
+    } catch (e) {
+      debugPrint('Error: $e');
+      _error = ApiService.messageToUser;
+      _remoteData = null;
+    } finally {
+      _isLoading = false;
+      notifyListeners();
+    }
+  }
+
+  //TODO
+
+  bool _isSearching = false;
+  bool get isSearching => _isSearching;
+
+  final TextEditingController _searchTextController = TextEditingController();
+  TextEditingController get searchTextController => _searchTextController;
+
+  void onToggleSearch() {
+    _isSearching = !_isSearching;
+    if (!_isSearching) {
+      _searchTextController.clear();
+    }
+    notifyListeners();
+  }
+
+  @override
+  void dispose() {
+    _searchTextController.dispose();
+    super.dispose();
   }
 }
