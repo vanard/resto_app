@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:provider/provider.dart';
+import 'package:restaurant_app/providers/main_provider.dart';
 import 'package:restaurant_app/screens/profile_view.dart';
 import 'package:restaurant_app/screens/restaurant_food_view.dart';
 
@@ -11,7 +13,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int selectedNavigationIndex = 0;
+  // int selectedNavigationIndex = 0;
   late final List<Widget> pages;
 
   @override
@@ -23,9 +25,11 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final provider = Provider.of<MainProvider>(context);
+
     return Scaffold(
       bottomNavigationBar: BottomNavigationBar(
-        currentIndex: selectedNavigationIndex,
+        currentIndex: provider.selectedNavigationIndex,
         backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
         elevation: 0,
         iconSize: 28,
@@ -42,9 +46,10 @@ class _MyHomePageState extends State<MyHomePage> {
           color: Colors.grey,
         ),
         onTap: (int index) {
-          setState(() {
-            selectedNavigationIndex = index;
-          });
+          provider.onNavigationTap(index);
+          // setState(() {
+          //   selectedNavigationIndex = index;
+          // });
         },
         items: [
           BottomNavigationBarItem(icon: Icon(Iconsax.home5), label: 'Home'),
@@ -58,7 +63,7 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
         ],
       ),
-      body: pages[selectedNavigationIndex],
+      body: pages[provider.selectedNavigationIndex],
     );
   }
 
