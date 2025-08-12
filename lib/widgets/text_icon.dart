@@ -10,10 +10,7 @@ class TextIcon extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Icon(
-          icon,
-          // color: Theme.of(context).colorScheme.primary
-        ),
+        Icon(icon, color: Theme.of(context).colorScheme.primary),
         const SizedBox(width: 4),
         Text(
           text,

@@ -47,9 +47,14 @@ class RestaurantItem extends StatelessWidget {
             const SizedBox(height: 8),
             TitleText(text: restaurant.name),
             const SizedBox(height: 4),
-            TextIcon(text: restaurant.city, icon: Icons.location_on),
-            const SizedBox(height: 4),
-            TextIcon(text: restaurant.rating.toString(), icon: Icons.star),
+            Row(
+              children: [
+                TextIcon(text: restaurant.city, icon: Icons.location_on),
+                const SizedBox(width: 20),
+                // Spacer(),
+                TextIcon(text: restaurant.rating.toString(), icon: Icons.star),
+              ],
+            ),
           ],
         ),
       ),

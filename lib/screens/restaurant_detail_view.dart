@@ -6,6 +6,7 @@ import 'package:restaurant_app/data/api_service.dart';
 import 'package:restaurant_app/models/restaurant.dart';
 import 'package:restaurant_app/providers/restaurants_provider.dart';
 import 'package:restaurant_app/screens/add_review_view.dart';
+import 'package:restaurant_app/widgets/label_subtitle_text.dart';
 import 'package:restaurant_app/widgets/label_title_text.dart';
 import 'package:restaurant_app/widgets/text_icon.dart';
 import 'package:restaurant_app/widgets/title_text.dart';
@@ -64,9 +65,15 @@ class _RestaurantDetailScreensState extends State<RestaurantDetailScreens> {
         for (final category in restaurant.categories!)
           Chip(
             label: Text(category.name),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadiusGeometry.circular(16),
+            labelStyle: TextStyle(
+              color: Theme.of(context).colorScheme.primary,
+              fontSize: 12,
             ),
+            side: BorderSide.none,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadiusGeometry.circular(32),
+            ),
+            backgroundColor: Theme.of(context).colorScheme.primaryContainer,
           ),
       ],
     );
@@ -77,8 +84,6 @@ class _RestaurantDetailScreensState extends State<RestaurantDetailScreens> {
     String error,
     bool isLoading,
   ) {
-    // Consumer<RestaurantsProvider>(
-    //   builder: (context, provider, child) {
     if (isLoading) return getLoadingUI();
     if (error.isNotEmpty) {
       return Text('Error: $error');
@@ -94,8 +99,6 @@ class _RestaurantDetailScreensState extends State<RestaurantDetailScreens> {
         trailing: Text(restaurant.customerReviews![index].date ?? ''),
       ),
     );
-    //   },
-    // );
   }
 
   Widget getFoods(Restaurant restaurant, String error, bool isLoading) {
@@ -168,9 +171,10 @@ class _RestaurantDetailScreensState extends State<RestaurantDetailScreens> {
                 ),
                 const SizedBox(height: 8),
                 TitleText(text: widget.restaurant.name),
-                const SizedBox(height: 4),
+                if (!isLoading && restaurant.address != null)
+                  LabelSubtitleText(text: restaurant.address!),
                 getChipList(restaurant, error, isLoading),
-                const SizedBox(height: 8),
+                const SizedBox(height: 4),
                 Text(
                   widget.restaurant.description,
                   textAlign: TextAlign.justify,
@@ -178,7 +182,7 @@ class _RestaurantDetailScreensState extends State<RestaurantDetailScreens> {
                     color: Theme.of(context).colorScheme.onSurface,
                   ),
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: 12),
                 LabelTitleText(text: 'Menus'),
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -215,7 +219,7 @@ class _RestaurantDetailScreensState extends State<RestaurantDetailScreens> {
                     ),
                   ],
                 ),
-                const SizedBox(height: 8),
+                const SizedBox(height: 12),
                 if (restaurant.customerReviews != null &&
                     restaurant.customerReviews!.isNotEmpty)
                   LabelTitleText(text: 'Review'),
